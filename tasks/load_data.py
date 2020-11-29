@@ -28,7 +28,7 @@ class LoadData(Source):
             if value == '':
                 self.intColumnsWithEmptyString.add(columnName)
                 return -1
-            if valle =='-1':
+            if value =='-1':
                 self.intColumnsWithMinusOne.add(columnName)
             return int(value)
 
