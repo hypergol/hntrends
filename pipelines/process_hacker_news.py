@@ -11,7 +11,7 @@ def process_hacker_news(filePattern, dataDirectory, threads=1, force=False):
     project = HypergolProject(dataDirectory=dataDirectory, force=force)
     rawData = project.datasetFactory.get(dataType=RawData, name='raw_data', chunkCount=256)
     loadData = LoadData(
-        filePattern=filePattern
+        filePattern=filePattern,
         outputDataset=rawData
     )
 
