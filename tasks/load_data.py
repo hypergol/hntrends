@@ -1,3 +1,4 @@
+import csv
 import gzip
 import glob
 from datetime import datetime
