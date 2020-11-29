@@ -32,6 +32,11 @@ class LoadData(Source):
                 self.intColumnsWithMinusOne.add(columnName)
             return int(value)
 
+        if data['timestamp'] == '':
+            timestamp = datetime.min
+        else
+            timestamp = datetime.fromisoformat(data['timestamp'][:19].replace(' ','T'))
+
         rawData = RawData(
             title=data['title'], 
             url=data['url'], 
@@ -40,7 +45,7 @@ class LoadData(Source):
             author=data['by'],
             score=safe_int('score', data['score']),
             time=safe_int('time', data['time']),
-            timestamp=datetime.fromisoformat(data['timestamp'][:19].replace(' ','T')),
+            timestamp=timestamp,
             htype=data['type'],
             hid=int(data['id']),
             parent=safe_int('parent', data['parent']),
