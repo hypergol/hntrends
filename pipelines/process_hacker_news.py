@@ -7,13 +7,14 @@ from tasks.process_with_spacy import ProcessWithSpacy
 from data_models.raw_data import RawData
 
 
-def process_hacker_news(filePattern, threads=1, force=False):
-    project = HypergolProject(dataDirectory='.', force=force)
-    rawDatas = project.datasetFactory.get(dataType=RawData, name='raw_datas')
+def process_hacker_news(filePattern, dataDirectory, threads=1, force=False):
+    project = HypergolProject(dataDirectory=dataDirectory, force=force)
+    rawData = project.datasetFactory.get(dataType=RawData, name='raw_data', chunkCount=256)
     loadData = LoadData(
         filePattern=filePattern
-        outputDataset=rawData,
+        outputDataset=rawData
     )
+
     # cleanText = CleanText(
     #     inputDatasets=[rawData],
     #     outputDataset=textData,
