@@ -17,6 +17,7 @@ def process_hacker_news(filePattern, dataDirectory, threads=1, raiseIfDirty=True
     )
     rawData = project.datasetFactory.get(dataType=RawData, name='raw_data', chunkCount=256)
     loadData = LoadData(
+        logAtEachN=200_000
         filePattern=filePattern,
         outputDataset=rawData
     )

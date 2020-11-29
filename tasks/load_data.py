@@ -1,4 +1,4 @@
-import csv
+import sys
 import gzip
 import glob
 from datetime import datetime
@@ -8,28 +8,25 @@ from data_models.raw_data import RawData
 
 class LoadData(Source):
 
-    def __init__(self, filePattern, *args, **kwargs):
+    def __init__(self, filePattern, logAtEachN, *args, **kwargs):
         super(LoadData, self).__init__(*args, **kwargs)
         # for example: '/data/hn-full-20201129/hn-full-20201129-*'
         self.filePattern = filePattern
-        self.intColumnsWithEmptyString = set()
-        self.intColumnsWithMinusOne = set()
+        self.logAtEachN = logAtEachN
 
     def source_iterator(self):
         hnfiles = glob.glob(self.filePattern)
         for hnfile in hnfiles:
-            with gzip.open(hnfile, 'rt') as csvfile:
-                for row in csv.DictReader(csvfile):
-                    yield row
-        self.logger.log(f'Found special columns:\n  intColumnsWithEmptyString:{self.intColumnsWithEmptyString}\n  intColumnsWithMinusOne:{self.intColumnsWithMinusOne}')
+            hnDataframe=pd.read_csv(gzip.open(hnfile,'rt'))
+            for k, row in enumerate(hnDataframe.itertuples(index=False)):
+                if k % self.logAtEachN == 0:
+                    self.logger.log(f'Processed: {hnfile}: {k}/{len(hnDataframe)}')
+                yield row
 
     def run(self, data):
         def safe_int(columnName, value):
             if value == '':
-                self.intColumnsWithEmptyString.add(columnName)
-                return -1
-            if value =='-1':
-                self.intColumnsWithMinusOne.add(columnName)
+                return -sys.maxsize
             return int(value)
 
         if data['timestamp'] == '':
