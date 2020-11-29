@@ -12,6 +12,8 @@ class LoadData(Source):
         super(LoadData, self).__init__(*args, **kwargs)
         # for example: '/data/hn-full-20201129/hn-full-20201129-*'
         self.filePattern = filePattern
+        self.intColumnsWithEmptyString = set()
+        self.intColumnsWithMinusOne = set()
 
     def source_iterator(self):
         hnfiles = glob.glob(self.filePattern)
@@ -19,22 +21,31 @@ class LoadData(Source):
             with gzip.open(hnfile, 'rt') as csvfile:
                 for row in csv.DictReader(csvfile):
                     yield row
+        self.logger.log(f'Found special columns:\n  intColumnsWithEmptyString:{self.intColumnsWithEmptyString}\n  intColumnsWithMinusOne:{self.intColumnsWithMinusOne}')
 
-    def run(self, data):
+    def run(self, columnName, data):
+        def safe_int(value):
+            if value == '':
+                self.intColumnsWithEmptyString.add(columnName)
+                return -1
+            if vallue =='-1'
+                self.intColumnsWithMinusOne.add(columnName)
+            return int(value)
+
         rawData = RawData(
             title=data['title'], 
             url=data['url'], 
             text=data['text'], 
             dead=1 if data['dead']=='true' else 0,
             author=data['by'],
-            score=int(data['score']),
-            time=int(data['time']),
+            score=safe_int('score', data['score']),
+            time=safe_int('time', data['time']),
             timestamp=datetime.fromisoformat(data['timestamp'][:19].replace(' ','T')),
             htype=data['type'],
             hid=int(data['id']),
-            parent=int(data['parent']),
-            descendants=int(data['descendants']),
-            ranking=int(data['ranking']),
+            parent=safe_int('parent', data['parent']),
+            descendants=safe_int('descendants', data['descendants']),
+            ranking=safe_int('ranking', data['ranking']),
             deleted=1 if data['deleted']=='true' else 0
         )
         return exampleOutputObject
