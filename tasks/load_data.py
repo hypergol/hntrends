@@ -38,7 +38,7 @@ class LoadData(Source):
         rawData = RawData(
             title=data.title, 
             url=data.url, 
-            text=data.text., 
+            text=data.text, 
             dead=1 if data.dead=='true' else 0,
             author=data.by,
             score=safe_int(data.score),
@@ -48,7 +48,7 @@ class LoadData(Source):
             hid=int(data.id),
             parent=safe_int(data.parent),
             descendants=safe_int(data.descendants),
-            ranking=safe_int(data.ranking.),
+            ranking=safe_int(data.ranking),
             deleted=1 if data.deleted=='true' else 0
         )
         return rawData
