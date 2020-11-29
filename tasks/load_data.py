@@ -34,7 +34,7 @@ class LoadData(Source):
 
         if data['timestamp'] == '':
             timestamp = datetime.min
-        else
+        else:
             timestamp = datetime.fromisoformat(data['timestamp'][:19].replace(' ','T'))
 
         rawData = RawData(
