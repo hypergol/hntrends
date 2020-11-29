@@ -1,6 +1,7 @@
 import sys
 import gzip
 import glob
+import pandas as pd
 from datetime import datetime
 from hypergol import Source
 from data_models.raw_data import RawData
