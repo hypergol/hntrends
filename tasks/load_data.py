@@ -23,8 +23,8 @@ class LoadData(Source):
                     yield row
         self.logger.log(f'Found special columns:\n  intColumnsWithEmptyString:{self.intColumnsWithEmptyString}\n  intColumnsWithMinusOne:{self.intColumnsWithMinusOne}')
 
-    def run(self, columnName, data):
-        def safe_int(value):
+    def run(self, data):
+        def safe_int(columnName, value):
             if value == '':
                 self.intColumnsWithEmptyString.add(columnName)
                 return -1
