@@ -18,7 +18,7 @@ class LoadData(Source):
     def source_iterator(self):
         hnfiles = glob.glob(self.filePattern)
         for hnfile in hnfiles:
-            hnDataframe=pd.read_csv(gzip.open(hnfile,'rt'), dtype=object)
+            hnDataframe=pd.read_csv(gzip.open(hnfile,'rt'), dtype=object, na_filter=False)
             for k, row in enumerate(hnDataframe.itertuples(index=False)):
                 if k % self.logAtEachN == 0:
                     self.logger.log(f'Processed: {hnfile}: {k}/{len(hnDataframe)}')
