@@ -48,4 +48,4 @@ class LoadData(Source):
             ranking=safe_int('ranking', data['ranking']),
             deleted=1 if data['deleted']=='true' else 0
         )
-        return exampleOutputObject
+        return rawData
