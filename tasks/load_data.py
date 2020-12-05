@@ -14,8 +14,6 @@ class LoadData(Task):
         # for example: '/data/hn-full-20201129/hn-full-20201129-*'
         self.logAtEachN = logAtEachN
         self.filePattern = filePattern
-        self.intColumnsWithEmptyString = set()
-        self.intColumnsWithMinusOne = set()
 
     def get_jobs(self):
         hnfiles = glob.glob(self.filePattern)
@@ -30,17 +28,14 @@ class LoadData(Task):
         with gzip.open(hnfile, 'rt') as csvfile:
             for k, row in enumerate(csv.DictReader(csvfile)):
                 if k % self.logAtEachN == 0:
-                    self.logger.log(f'Processed: {hnfile}: {k}')
+                    self.logger.log(f'Processed: {jobId:03} - {hnfile}: {k}')
                 yield (row, )
         self.logger.log(f'Found special columns:\n  intColumnsWithEmptyString:{self.intColumnsWithEmptyString}\n  intColumnsWithMinusOne:{self.intColumnsWithMinusOne}')
 
     def run(self, data):
         def safe_int(columnName, value):
             if value == '':
-                self.intColumnsWithEmptyString.add(columnName)
-                return -1
-            if value =='-1':
-                self.intColumnsWithMinusOne.add(columnName)
+                return -sys.maxsize
             return int(value)
 
         if data['timestamp'] == '':
