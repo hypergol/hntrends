@@ -1,7 +1,7 @@
-from hypergol import SimpleTask
+from hypergol import Task
 
 
-class CleanText(SimpleTask):
+class CleanText(Task):
 
     def __init__(self, exampleParameter, *args, **kwargs):
         super(CleanText, self).__init__(*args, **kwargs)
@@ -15,4 +15,4 @@ class CleanText(SimpleTask):
 
     def run(self, exampleInputObject1, exampleInputObject2):
         raise NotImplementedError(f'{self.__class__.__name__} must implement run()')
-        return exampleOutputObject
+        self.output.append(exampleOutputObject)
