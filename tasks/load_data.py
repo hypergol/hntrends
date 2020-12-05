@@ -32,7 +32,7 @@ class LoadData(Task):
                 if k % self.logAtEachN == 0:
                     self.logger.log(f'Processed: {jobId:03} - {hnfile}: {k}')
                 yield (row, )
-        self.logger.log(f'Found special columns:\n  intColumnsWithEmptyString:{self.intColumnsWithEmptyString}\n  intColumnsWithMinusOne:{self.intColumnsWithMinusOne}')
+        self.logger.log(f'Processed: {jobId:03} - {hnfile}: {k}')
 
     def run(self, data):
         def safe_int(columnName, value):
