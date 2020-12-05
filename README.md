@@ -1,5 +1,16 @@
 # Hntrends
 
+Commands to create this project:
+
+```
+python -m hypergol.cli.create_project Hntrends
+python -m hypergol.cli.create_data_model RawData title:str url:str text:str dead:int author:str score:int time:int timestamp:datetime htype:str hid:int:id parent:int descendants:int ranking:int deleted:int
+python3 -m hypergol.cli.create_task LoadData --source
+python3 -m hypergol.cli.create_task CleanText --simple
+python3 -m hypergol.cli.create_task ProcessWithSpacy --simple
+python3 -m hypergol.cli.create_pipeline ProcessHackerNews LoadData CleanText ProcessWithSpacy RawData
+```
+
 This project was generated with the Hypergol framework
 
 Please see documentation for instructions: [https://hypergol.readthedocs.io/en/latest/](https://hypergol.readthedocs.io/en/latest/)
