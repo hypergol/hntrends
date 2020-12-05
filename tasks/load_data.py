@@ -20,11 +20,12 @@ class LoadData(Task):
         return [Job(
             id_=jobId, 
             total=len(hnfiles), 
-            parameters={'hnfile': hnfile}
+            parameters={'hnfile': hnfile, 'jobId': jobId}
         ) for jobId, hnfile in enumerate(hnfiles)]
 
     def source_iterator(self, parameters):
         hnfile = parameters['hnfile']
+        jobId = parameters['jobId']
         with gzip.open(hnfile, 'rt') as csvfile:
             for k, row in enumerate(csv.DictReader(csvfile)):
                 if k % self.logAtEachN == 0:
