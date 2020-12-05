@@ -9,9 +9,10 @@ from data_models.raw_data import RawData
 
 class LoadData(Task):
 
-    def __init__(self, filePattern, *args, **kwargs):
+    def __init__(self, logAtEachN, filePattern, *args, **kwargs):
         super(LoadData, self).__init__(*args, **kwargs)
         # for example: '/data/hn-full-20201129/hn-full-20201129-*'
+        self.logAtEachN = logAtEachN
         self.filePattern = filePattern
         self.intColumnsWithEmptyString = set()
         self.intColumnsWithMinusOne = set()
@@ -27,7 +28,9 @@ class LoadData(Task):
     def source_iterator(self, parameters):
         hnfile = parameters['hnfile']
         with gzip.open(hnfile, 'rt') as csvfile:
-            for row in csv.DictReader(csvfile):
+            for k, row in enumerate(csv.DictReader(csvfile)):
+                if k % self.logAtEachN == 0:
+                    self.logger.log(f'Processed: {hnfile}: {k}')
                 yield (row, )
         self.logger.log(f'Found special columns:\n  intColumnsWithEmptyString:{self.intColumnsWithEmptyString}\n  intColumnsWithMinusOne:{self.intColumnsWithMinusOne}')
 
