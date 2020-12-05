@@ -1,26 +1,29 @@
-import csv
-import gzip
-import glob
-from datetime import datetime
-from hypergol import Source
-from data_models.raw_data import RawData
+from hypergol import Job
+from hypergol import Task
 
 
-class LoadData(Source):
+class LoadData(Task):
 
-    def __init__(self, filePattern, *args, **kwargs):
+    def __init__(self, exampleParameter, *args, **kwargs):
         super(LoadData, self).__init__(*args, **kwargs)
         # for example: '/data/hn-full-20201129/hn-full-20201129-*'
         self.filePattern = filePattern
         self.intColumnsWithEmptyString = set()
         self.intColumnsWithMinusOne = set()
 
-    def source_iterator(self):
+    def get_jobs(self):
         hnfiles = glob.glob(self.filePattern)
-        for hnfile in hnfiles:
-            with gzip.open(hnfile, 'rt') as csvfile:
-                for row in csv.DictReader(csvfile):
-                    yield row
+        return [Job(
+            id_=jobId, 
+            total=len(hnfiles), 
+            parameters={'hnfile': hnfile}
+        ) for jobId, hnfile in enumerate(hnfiles)]
+
+    def source_iterator(self, parameters):
+        hnfile = parameters['hnfile']
+        with gzip.open(hnfile, 'rt') as csvfile:
+            for row in csv.DictReader(csvfile):
+                yield (row, )
         self.logger.log(f'Found special columns:\n  intColumnsWithEmptyString:{self.intColumnsWithEmptyString}\n  intColumnsWithMinusOne:{self.intColumnsWithMinusOne}')
 
     def run(self, data):
@@ -53,4 +56,4 @@ class LoadData(Source):
             ranking=safe_int('ranking', data['ranking']),
             deleted=1 if data['deleted']=='true' else 0
         )
-        return rawData
+        self.output.append(rawData)
