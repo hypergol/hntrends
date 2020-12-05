@@ -8,8 +8,8 @@ export MKL_NUM_THREADS=1
 export OPENBLAS_NUM_THREADS=1
 export NUMEXPR_NUM_THREADS=1
 
-FILE_PATTERN="/home/sragner/hn-full-20201129-*"
-DATA_DIRECTORY="/data/hn-full-20201129"
+FILE_PATTERN="/home/sragner/hn-full-20201129/hn-full-20201129-*"
+DATA_DIRECTORY="/home/sragner/hn-full-20201129"
 
 python3 \
     ./pipelines/process_hacker_news.py \
