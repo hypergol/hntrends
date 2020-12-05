@@ -4,7 +4,7 @@ from hypergol import Task
 
 class LoadData(Task):
 
-    def __init__(self, exampleParameter, *args, **kwargs):
+    def __init__(self, filePattern, *args, **kwargs):
         super(LoadData, self).__init__(*args, **kwargs)
         # for example: '/data/hn-full-20201129/hn-full-20201129-*'
         self.filePattern = filePattern
