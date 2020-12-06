@@ -11,6 +11,8 @@ python3 -m hypergol.cli.create_task ProcessWithSpacy
 python3 -m hypergol.cli.create_pipeline ProcessHackerNews LoadData CleanText ProcessWithSpacy RawData
 python -m hypergol.cli.create_data_model Story title:str url:str author:str score:int time:int timestamp:datetime hid:int:id descendants:int ranking:int
 python -m hypergol.cli.create_data_model Comment text:str author:str time:int timestamp:datetime hid:int:id parent:int
+python3 -m hypergol.cli.create_task SelectStories RawData Story
+python3 -m hypergol.cli.create_task SelectComments RawData Comment
 ```
 
 This project was generated with the Hypergol framework
