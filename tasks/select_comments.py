@@ -9,8 +9,9 @@ def get_clean_text(rawText):
     with warnings.catch_warnings():
         warnings.filterwarnings('ignore', category=MarkupResemblesLocatorWarning)
         soup=BeautifulSoup(rawText, features='html.parser')
-        for a in soup.find_all('a'):
-            a.extract()
+        for tag in soup.find_all(['a', 'pre', 'code']):
+            tag.extract()
+        for 
     return soup.text
 
 class SelectComments(Task):
