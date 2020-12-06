@@ -5,16 +5,14 @@ from hypergol import BaseData
 
 class Story(BaseData):
 
-    def __init__(self, title: str, url: str, author: str, score: int, time: int, timestamp: datetime, hid: int, descendants: int, ranking: int):
+    def __init__(self, title: str, url: str, author: str, score: int, timestamp: datetime, hid: int, descendants: int):
         self.title = title
         self.url = url
         self.author = author
         self.score = score
-        self.time = time
         self.timestamp = timestamp
         self.hid = hid
         self.descendants = descendants
-        self.ranking = ranking
 
     def get_id(self):
         return (self.hid, )
