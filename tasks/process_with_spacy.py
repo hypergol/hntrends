@@ -1,18 +1,47 @@
+import spacy
 from hypergol import Task
+from data_models.document import Document
 
+# replace -> swap the sf with the type
+# keep -> extract NER as a label
+# ignore -> do nothing
+NER_CHANGES = {
+    'CARDINAL': 'replace',
+    'PERSON': 'keep',
+    'TIME': 'replace',
+    'WORK_OF_ART': 'keep',
+    'ORG': 'keep',
+    'DATE': 'replace',
+    'GPE': 'keep',
+    'PRODUCT': 'keep',
+    'QUANTITY': 'replace',
+    'ORDINAL': 'ignore',
+    'PERCENT': 'replace',
+    'NORP': 'keep',
+    'MONEY': 'replace',
+    'LOC': 'ignore',
+    'FAC': 'keep',
+    'LANGUAGE': 'ignore',
+    'EVENT': 'ignore',
+    'LAW': 'ignore'
+}
 
 class ProcessWithSpacy(Task):
 
-    def __init__(self, exampleParameter, *args, **kwargs):
+    def __init__(self, spacyModelName, *args, **kwargs):
         super(ProcessWithSpacy, self).__init__(*args, **kwargs)
-        # TODO: all member variables must be pickle-able, otherwise use the "Delayed" methodology
-        # TODO: (e.g. for a DB connection), see the documentation <add link here>
-        self.exampleParameter = exampleParameter
+        self.spacyModelName = spacyModelName
 
     def init(self):
-        # TODO: initialise members that are NOT "Delayed" here (e.g. load spacy model)
-        pass
+        self.spacyModel = spacy.load(self.spacyModelName)
 
-    def run(self, exampleInputObject1, exampleInputObject2):
+    def run(self, comment):
+        text = comment.text
+        spacyDocument = spacyModel(text)
+        for entity in spacyDocument.ents:
+
+
+
+
         raise NotImplementedError(f'{self.__class__.__name__} must implement run()')
         self.output.append(exampleOutputObject)

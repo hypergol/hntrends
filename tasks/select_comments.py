@@ -1,7 +1,17 @@
+import warnings
 from hypergol import Task
 from data_models.raw_data import RawData
 from data_models.comment import Comment
+from bs4 import BeautifulSoup
+from bs4 import MarkupResemblesLocatorWarning
 
+def get_clean_text(rawText):
+    with warnings.catch_warnings():
+        warnings.filterwarnings('ignore', category=MarkupResemblesLocatorWarning)
+        soup=BeautifulSoup(rawText, features='html.parser')
+        for a in soup.find_all('a'):
+            a.extract()
+    return soup.text
 
 class SelectComments(Task):
 
@@ -13,11 +23,12 @@ class SelectComments(Task):
             return
         if rawData.text == '':
             return
-        if rawData.htype in ['comment', 'story']:
-            self.output.append(Comment(
-                text=rawData.text,
-                author=rawData.author,
-                timestamp=rawData.timestamp,
-                hid=rawData.hid,
-                parent=rawData.parent 
-            ))
+        if rawData.htype not in ['comment', 'story']:
+            return
+        self.output.append(Comment(
+            text=get_clean_text(rawData.text),
+            author=rawData.author,
+            timestamp=rawData.timestamp,
+            hid=rawData.hid,
+            parent=rawData.parent 
+        ))
