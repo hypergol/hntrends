@@ -5,7 +5,7 @@ from data_models.story import Story
 
 class SelectStories(Task):
 
-    def __init__(self, exampleParameter, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(SelectStories, self).__init__(*args, **kwargs)
 
     def run(self, rawData):
