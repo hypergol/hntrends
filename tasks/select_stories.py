@@ -9,16 +9,17 @@ class SelectStories(Task):
         super(SelectStories, self).__init__(*args, **kwargs)
 
     def run(self, rawData):
-        if rawData.htype == 'story' and rawData.dead == False and rawData.deleted == False:
-            self.output.append(
-                story = Story(
-                    title=rawData.title,
-                    url=rawData.url,
-                    author=rawData.author,
-                    score = rawData.score,
-                    timestamp = rawData.timestamp,
-                    hid=rawData.hid,
-                    descendants =rawData.descendants
-                )
-            )
-            self.output.append(story)
+        if rawData.dead == 1 or rawData.deleted == 1:
+            return
+        if rawData.htype == 'story':
+            if rawData.title == '' and rawData.url == '':
+                return
+            self.output.append(Story(
+                title=rawData.title,
+                url=rawData.url,
+                author=rawData.author,
+                score = rawData.score,
+                timestamp = rawData.timestamp,
+                hid=rawData.hid,
+                descendants =rawData.descendants
+            ))

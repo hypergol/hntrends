@@ -5,16 +5,19 @@ from data_models.comment import Comment
 
 class SelectComments(Task):
 
-    def __init__(self, exampleParameter, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(SelectComments, self).__init__(*args, **kwargs)
-        # TODO: all member variables must be pickle-able, otherwise use the "Delayed" methodology
-        # TODO: (e.g. for a DB connection), see the documentation <add link here>
-        self.exampleParameter = exampleParameter
 
-    def init(self):
-        # TODO: initialise members that are NOT "Delayed" here (e.g. load spacy model)
-        pass
-
-    def run(self, exampleInputObject1, exampleInputObject2):
-        raise NotImplementedError(f'{self.__class__.__name__} must implement run()')
-        self.output.append(exampleOutputObject)
+    def run(self, rawData):
+        if rawData.dead == 1 or rawData.deleted == 1:
+            return
+        if rawData.text == '':
+            return
+        if rawData.htype in ['comment', 'story']:
+            self.output.append(Comment(
+                text=rawData.text,
+                author=rawData.author,
+                timestamp=rawData.timestamp,
+                hid=rawData.hid,
+                parent=rawData.parent 
+            ))
