@@ -5,10 +5,9 @@ from hypergol import BaseData
 
 class Comment(BaseData):
 
-    def __init__(self, text: str, author: str, time: int, timestamp: datetime, hid: int, parent: int):
+    def __init__(self, text: str, author: str, timestamp: datetime, hid: int, parent: int):
         self.text = text
         self.author = author
-        self.time = time
         self.timestamp = timestamp
         self.hid = hid
         self.parent = parent
