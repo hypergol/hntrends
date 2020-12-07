@@ -7,24 +7,29 @@ from data_models.document import Document
 # keep -> extract NER as a label
 # ignore -> do nothing
 NER_CHANGES = {
-    'CARDINAL': 'one',
+    'CARDINAL': 'replace',
     'PERSON': 'keep',
-    'TIME': 'ten hours',
+    'TIME': 'replace',
     'WORK_OF_ART': 'keep',
     'ORG': 'keep',
-    'DATE': 'today',
+    'DATE': 'replace',
     'GPE': 'keep',
     'PRODUCT': 'keep',
-    'QUANTITY': '100 watts',
-    'ORDINAL': 'first',
-    'PERCENT': '100%',
+    'QUANTITY': 'replace',
+    'ORDINAL': 'ignore',
+    'PERCENT': 'replace',
     'NORP': 'keep',
-    'MONEY': '$100',
+    'MONEY': 'replace',
     'LOC': 'ignore',
     'FAC': 'keep',
     'LANGUAGE': 'ignore',
     'EVENT': 'ignore',
     'LAW': 'ignore'
+}
+
+TAGS_TO_KEEP = {
+    'NN', 'JJ', 'VB', 'NNS', 'NNP', 'VBP', 'VBG', 'VBN', 'VBD', 'JJR', 
+    'RBR', 'JJS', 'PDT', 'NNPS', 'RBS'
 }
 
 class ProcessWithSpacy(Task):
@@ -42,14 +47,14 @@ class ProcessWithSpacy(Task):
         labels=[f'H{comment.hid}', f'@{comment.author}']
         if comment.parent != -sys.maxsize:
             labels.append(f'H{comment.parent}')
-        for entity in spacyDocument.ents:
-            if NER_CHANGES[entity.label_] not in ['keep', 'ignore'] and text[entity.start_char:entity.end_char] == entity.text:
-                text = text[:entity.start_char] + NER_CHANGES[entity.label_] + text[entity.end_char:]
+        with spacyDocument.retokenize() as retokenizer:
+            for entity in spacyDocument.ents:
+                if NER_CHANGES[entity.label_] == 'replace':
+                    span=spacyDocument[entity.start:entity.end]
+                    retokenizer.merge(span, attrs={"TAG": "XXX"})
             if NER_CHANGES[entity.label_] == 'keep':
                 labels.append(entity.text)
-        modifiedSpacyDocument = spacyModel(text)
-
-
+        tokens = [token.lemma_ for token in spacyDocument if token.tag_ in TAGS_TO_KEEP]
         self.output.append(Document(
             hid=comment.hid,
             timestamp=comment.timestamp,
