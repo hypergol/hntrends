@@ -47,7 +47,7 @@ class ProcessWithSpacy(Task):
         self.cnt += 1
         if self.cnt % self.logAtEachN == 0:
             self.logger.log(f'Processed: {self.cnt}')
-        spacyDocument = spacyModel(comment.text)
+        spacyDocument = self.spacyModel(comment.text)
         labels=[f'H{comment.hid}', f'@{comment.author}']
         if comment.parent != -sys.maxsize:
             labels.append(f'H{comment.parent}')
