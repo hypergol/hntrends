@@ -4,3 +4,4 @@ pip3 install --upgrade pip
 pip3 install setuptools==47.1.1
 pip3 install wheel
 pip3 install -r requirements.txt
+python3 -m spacy download en_core_web_sm
