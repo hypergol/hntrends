@@ -50,7 +50,7 @@ class ProcessWithSpacy(Task):
             for entity in spacyDocument.ents:
                 if NER_CHANGES[entity.label_] == 'replace':
                     span=spacyDocument[entity.start:entity.end]
-                    retokenizer.merge(span, attrs={"TAG": "XXX"})
+                    retokenizer.merge(span, attrs={"TAG": "IGNORE"})
                 if NER_CHANGES[entity.label_] == 'keep':
                     labels.append(entity.text)
         tokens = [token.lemma_ for token in spacyDocument if token.tag_ in TAGS_TO_KEEP]
