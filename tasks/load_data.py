@@ -10,29 +10,19 @@ from data_models.raw_data import RawData
 
 class LoadData(Task):
 
-    def __init__(self, logAtEachN, filePattern, *args, **kwargs):
+    def __init__(self, filePattern, *args, **kwargs):
         super(LoadData, self).__init__(*args, **kwargs)
         # for example: '/data/hn-full-20201129/hn-full-20201129-*'
-        self.logAtEachN = logAtEachN
         self.filePattern = filePattern
 
     def get_jobs(self):
         hnfiles = glob.glob(self.filePattern)
-        return [Job(
-            id_=jobId, 
-            total=len(hnfiles), 
-            parameters={'hnfile': hnfile, 'jobId': jobId}
-        ) for jobId, hnfile in enumerate(hnfiles)]
+        return [Job(id_=jobId, total=len(hnfiles)}) for jobId, hnfile in enumerate(hnfiles)]
 
     def source_iterator(self, parameters):
-        hnfile = parameters['hnfile']
-        jobId = parameters['jobId']
         with gzip.open(hnfile, 'rt') as csvfile:
-            for k, row in enumerate(csv.DictReader(csvfile)):
-                if k % self.logAtEachN == 0:
-                    self.logger.log(f'Processed: {jobId:03} - {hnfile}: {k}')
+            for row in csv.DictReader(csvfile):
                 yield (row, )
-        self.logger.log(f'Processed: {jobId:03} - {hnfile}: {k}')
 
     def run(self, data):
         def safe_int(columnName, value):

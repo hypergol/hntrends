@@ -39,7 +39,7 @@ def process_hacker_news(filePattern, dataDirectory, threads=1, raiseIfDirty=True
     )
 
     processWithSpacy = ProcessWithSpacy(
-        logAtEachN=200_000,
+        logAtEachN=10_000,
         spacyModelName='en_core_web_sm',
         inputDatasets=[comments],
         outputDataset=documents,
