@@ -34,16 +34,20 @@ TAGS_TO_KEEP = {
 
 class ProcessWithSpacy(Task):
 
-    def __init__(self, spacyModelName, *args, **kwargs):
+    def __init__(self, logAtEachN, spacyModelName, *args, **kwargs):
         super(ProcessWithSpacy, self).__init__(*args, **kwargs)
         self.spacyModelName = spacyModelName
+        self.logAtEachN = logAtEachN
+        self.cnt = 0
 
     def init(self):
         self.spacyModel = spacy.load(self.spacyModelName)
 
     def run(self, comment):
-        text = comment.text
-        spacyDocument = spacyModel(text)
+        self.cnt += 1
+        if self.cnt % self.logAtEachN == 0:
+            self.logger.log(f'Processed: {self.cnt}')
+        spacyDocument = spacyModel(comment.text)
         labels=[f'H{comment.hid}', f'@{comment.author}']
         if comment.parent != -sys.maxsize:
             labels.append(f'H{comment.parent}')

@@ -39,6 +39,7 @@ def process_hacker_news(filePattern, dataDirectory, threads=1, raiseIfDirty=True
     )
 
     processWithSpacy = ProcessWithSpacy(
+        logAtEachN=200_000,
         spacyModelName='en_core_web_sm',
         inputDatasets=[comments],
         outputDataset=documents,
@@ -49,7 +50,7 @@ def process_hacker_news(filePattern, dataDirectory, threads=1, raiseIfDirty=True
             # loadData,
             # selectStories,
             # selectComments,
-
+            processWithSpacy
         ]
     )
     pipeline.run(threads=threads)
