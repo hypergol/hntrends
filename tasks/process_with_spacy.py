@@ -47,9 +47,9 @@ class ProcessWithSpacy(Task):
         # if self.k % 1000 != 0:
         #     return
         spacyDocument = self.spacyModel(comment.text)
-        labels={f'H{comment.hid}', f'@{comment.author}'}
+        labels={f'hn{comment.hid}', f'@{comment.author}'}
         if comment.parent != -sys.maxsize:
-            labels.add(f'H{comment.parent}')
+            labels.add(f'hn{comment.parent}')
         with spacyDocument.retokenize() as retokenizer:
             for entity in spacyDocument.ents:
                 if NER_CHANGES[entity.label_] == 'replace':
@@ -57,7 +57,7 @@ class ProcessWithSpacy(Task):
                     retokenizer.merge(span, attrs={"TAG": "IGNORE"})
                 if NER_CHANGES[entity.label_] == 'keep':
                     labels.add(entity.text.lower())
-        tokens = [token.lemma_ for token in spacyDocument if token.tag_ in TAGS_TO_KEEP]
+        tokens = [token.lemma_.lower() for token in spacyDocument if token.tag_ in TAGS_TO_KEEP]
         self.output.append(Document(
             hid=comment.hid,
             timestamp=comment.timestamp,
