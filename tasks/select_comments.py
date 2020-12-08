@@ -11,7 +11,7 @@ def get_clean_text(rawText):
         soup=BeautifulSoup(rawText, features='html.parser')
         for tag in soup.find_all(['a', 'pre', 'code']):
             tag.extract() 
-        return soup.text
+        return soup.get_text(separator='\n')
 
 class SelectComments(Task):
 
