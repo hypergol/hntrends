@@ -28,8 +28,8 @@ NER_CHANGES = {
 }
 
 TAGS_TO_KEEP = {
-    'NN', 'JJ', 'VB', 'NNS', 'NNP', 'VBP', 'VBG', 'VBN', 'VBD', 'JJR', 
-    'RBR', 'JJS', 'PDT', 'NNPS', 'RBS'
+    'IN', 'JJ', 'JJR', 'JJS', 'MD', 'NN', 'NNS', 'NNP', 'NNPS', 'PDT', 'RB', 'RBR',
+    'RBS', 'RP', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'WDT', 'WP', 'WP$', 'WRB'
 }
 
 class ProcessWithSpacy(Task):
@@ -37,15 +37,15 @@ class ProcessWithSpacy(Task):
     def __init__(self, spacyModelName, *args, **kwargs):
         super(ProcessWithSpacy, self).__init__(*args, **kwargs)
         self.spacyModelName = spacyModelName
-        self.k=0
+        # self.k=0
 
     def init(self):
         self.spacyModel = spacy.load(self.spacyModelName)
 
     def run(self, comment):
-        self.k+=1
-        if self.k % 1000 != 0:
-            return
+        # self.k+=1
+        # if self.k % 1000 != 0:
+        #     return
         spacyDocument = self.spacyModel(comment.text)
         labels={f'H{comment.hid}', f'@{comment.author}'}
         if comment.parent != -sys.maxsize:
@@ -56,7 +56,7 @@ class ProcessWithSpacy(Task):
                     span=spacyDocument[entity.start:entity.end]
                     retokenizer.merge(span, attrs={"TAG": "IGNORE"})
                 if NER_CHANGES[entity.label_] == 'keep':
-                    labels.add(entity.text.lower()))
+                    labels.add(entity.text.lower())
         tokens = [token.lemma_ for token in spacyDocument if token.tag_ in TAGS_TO_KEEP]
         self.output.append(Document(
             hid=comment.hid,
