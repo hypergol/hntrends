@@ -1,3 +1,4 @@
+import sys
 import csv
 import gzip
 import glob
@@ -9,38 +10,24 @@ from data_models.raw_data import RawData
 
 class LoadData(Task):
 
-    def __init__(self, logAtEachN, filePattern, *args, **kwargs):
+    def __init__(self, filePattern, *args, **kwargs):
         super(LoadData, self).__init__(*args, **kwargs)
         # for example: '/data/hn-full-20201129/hn-full-20201129-*'
-        self.logAtEachN = logAtEachN
         self.filePattern = filePattern
-        self.intColumnsWithEmptyString = set()
-        self.intColumnsWithMinusOne = set()
 
     def get_jobs(self):
         hnfiles = glob.glob(self.filePattern)
-        return [Job(
-            id_=jobId, 
-            total=len(hnfiles), 
-            parameters={'hnfile': hnfile}
-        ) for jobId, hnfile in enumerate(hnfiles)]
+        return [Job(id_=jobId, total=len(hnfiles)) for jobId, hnfile in enumerate(hnfiles)]
 
     def source_iterator(self, parameters):
-        hnfile = parameters['hnfile']
         with gzip.open(hnfile, 'rt') as csvfile:
-            for k, row in enumerate(csv.DictReader(csvfile)):
-                if k % self.logAtEachN == 0:
-                    self.logger.log(f'Processed: {hnfile}: {k}')
+            for row in csv.DictReader(csvfile):
                 yield (row, )
-        self.logger.log(f'Found special columns:\n  intColumnsWithEmptyString:{self.intColumnsWithEmptyString}\n  intColumnsWithMinusOne:{self.intColumnsWithMinusOne}')
 
     def run(self, data):
         def safe_int(columnName, value):
             if value == '':
-                self.intColumnsWithEmptyString.add(columnName)
-                return -1
-            if value =='-1':
-                self.intColumnsWithMinusOne.add(columnName)
+                return -sys.maxsize
             return int(value)
 
         if data['timestamp'] == '':
