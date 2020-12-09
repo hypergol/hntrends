@@ -19,7 +19,7 @@ class LoadData(Task):
         hnfiles = glob.glob(self.filePattern)
         return [Job(
             id_=jobId, 
-            total=len(hnfiles)
+            total=len(hnfiles),
             parameters={'hnfile': hnfile}
         ) for jobId, hnfile in enumerate(hnfiles)]
 
