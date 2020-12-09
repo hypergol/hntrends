@@ -48,8 +48,8 @@ def process_hacker_news(filePattern, dataDirectory, threads=1, raiseIfDirty=True
     pipeline = Pipeline(
         tasks=[
             # loadData,
-            selectStories,
-            # selectComments,
+            # selectStories,
+            selectComments,
             # processWithSpacy
         ]
     )
