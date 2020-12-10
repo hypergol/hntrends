@@ -17,9 +17,14 @@ class LoadData(Task):
 
     def get_jobs(self):
         hnfiles = glob.glob(self.filePattern)
-        return [Job(id_=jobId, total=len(hnfiles)) for jobId, hnfile in enumerate(hnfiles)]
+        return [Job(
+            id_=jobId, 
+            total=len(hnfiles),
+            parameters={'hnfile': hnfile}
+        ) for jobId, hnfile in enumerate(hnfiles)]
 
     def source_iterator(self, parameters):
+        hnfile = parameters['hnfile']
         with gzip.open(hnfile, 'rt') as csvfile:
             for row in csv.DictReader(csvfile):
                 yield (row, )

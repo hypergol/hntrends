@@ -27,6 +27,7 @@ NER_CHANGES = {
     'LAW': 'ignore'
 }
 
+# Original list: https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 TAGS_TO_KEEP = {
     'IN', 'JJ', 'JJR', 'JJS', 'MD', 'NN', 'NNS', 'NNP', 'NNPS', 'PDT', 'RB', 'RBR',
     'RBS', 'RP', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'WDT', 'WP', 'WP$', 'WRB'
