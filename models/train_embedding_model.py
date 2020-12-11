@@ -1,4 +1,5 @@
 import os
+import date
 import fire
 import logging
 from tqdm import tqdm
@@ -14,23 +15,21 @@ VECTOR_SIZE = 100
 
 class EpochSaver(CallbackAny2Vec):
 
-    def __init__(self, modelDirectory):
+    def __init__(self, modelDirectory, modelName):
         self.modelDirectory = modelDirectory
+        self.modelName = modelName
         self.epoch = 0
 
     def on_epoch_end(self, model):
-        fileName = get_tmpfile(f'{self.modelDirectory}/doc2vec_{self.epoch:03}.model')
+        Path(self.modelDirectory).mkdir(parents=True, exist_ok=True)
+        fileName = get_tmpfile(f'{self.modelDirectory}/{self.modelName}_{self.epoch:03}.model')
         model.save(fileName)
         self.epoch += 1
 
 
-def train_embedding_model(filePattern, dataDirectory, threads=1, raiseIfDirty=True, force=False): 
+def train_embedding_model(filePattern, dataDirectory, threads=1, force=False): 
     logger = Logger()
-    project = HypergolProject(
-        dataDirectory=dataDirectory, 
-        force=force,
-        repoManager=RepoManager(repoDirectory=os.getcwd(), raiseIfDirty=raiseIfDirty)
-    )
+    project = HypergolProject(dataDirectory=dataDirectory, force=force)
     modelDirectory = f'{}/{}/{}'
     modelDirectory = '/data/doc2vec'
     documents = project.datasetFactory.get(
@@ -39,7 +38,11 @@ def train_embedding_model(filePattern, dataDirectory, threads=1, raiseIfDirty=Tr
         name='documents', 
         chunkCount=256
     )
-    epochSaver = EpochSaver(modelDirectory=modelDirectory)
+    
+    epochSaver = EpochSaver(
+        modelDirectory=project.datasetFactory.branchDirectory,
+        modelName=f'doc2vec_{date.today().strftime("%Y%m%d")}_{project.repoManager.commitHash}'
+    )
 
     logger.info('Loading dataset - START')
     taggedData = []

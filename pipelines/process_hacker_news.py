@@ -1,7 +1,6 @@
 import os
 import fire
 from hypergol import HypergolProject
-from hypergol.hypergol_project import RepoManager
 from hypergol import Pipeline
 from tasks.load_data import LoadData
 from tasks.select_stories import SelectStories
@@ -12,11 +11,10 @@ from data_models.comment import Comment
 from data_models.story import Story
 from data_models.document import Document
 
-def process_hacker_news(filePattern, dataDirectory, threads=1, raiseIfDirty=True, force=False): 
+def process_hacker_news(filePattern, dataDirectory, threads=1, force=False): 
     project = HypergolProject(
         dataDirectory=dataDirectory, 
-        force=force,
-        repoManager=RepoManager(repoDirectory=os.getcwd(), raiseIfDirty=raiseIfDirty)
+        force=force
     )
     rawData = project.datasetFactory.get(dataType=RawData, name='raw_data', chunkCount=256)
     comments = project.datasetFactory.get(dataType=Comment, name='comments', chunkCount=256)
