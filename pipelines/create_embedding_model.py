@@ -7,6 +7,8 @@ import scipy.sparse as sps
 from datetime import date
 from itertools import islice
 from tqdm import tqdm
+
+from data_models.document import Document
 from hypergol import HypergolProject
 from hypergol.logger import Logger
 
