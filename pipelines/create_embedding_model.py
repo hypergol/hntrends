@@ -2,6 +2,7 @@ import os
 import fire
 import logging
 import array
+import pickle
 import numpy as np
 import scipy.sparse as sps
 from datetime import date
@@ -41,7 +42,7 @@ def create_vocabulary(documentsDataset, logger, dataDirectory):
     mentionId = 1_000_000_0000
     with documentsDataset.open('r') as dsr:
         # for document in tqdm(dsr, total=21_000_000):
-        for document in tqdm(islice(dsr, 1_000_000), total=1_000_000):
+        for document in tqdm(islice(dsr, 100_000), total=100_000):
             hid = f'hn{document.hid}'
             vocabulary[hid] = len(vocabulary)
             for label in document.labels:
