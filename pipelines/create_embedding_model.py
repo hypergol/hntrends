@@ -34,7 +34,7 @@ class EpochSaver(CallbackAny2Vec):
         model.save(fileName)
         self.epoch += 1
 
-def create_vocabulary(documentsDataset, logger, dataDirectory):
+def create_vocabulary(documentsDataset, logger, dataDirectory, name):
     logger.info('Process documents - START')
     vocabulary = {}
     rows=array.array('L')
@@ -65,11 +65,11 @@ def create_vocabulary(documentsDataset, logger, dataDirectory):
                 lastMentionId = mentionId
                 mentionId += 1
     logger.info('Process documents - save vocabulary')
-    pickle.dump(vocabulary, open(f'{dataDirectory}/vocabulary.pkl', 'rb'))
+    pickle.dump(vocabulary, open(f'{dataDirectory}/{name}_vocabulary.pkl', 'wb'))
     logger.info('Process documents - save rows - END')
-    np.save(f'{dataDirectory}/rows.npy', np.frombuffer(rows, dtype=np.int32))
+    np.save(f'{dataDirectory}/{name}_rows.npy', np.frombuffer(rows, dtype=np.int32))
     logger.info('Process documents - save cols - END')
-    np.save(f'{dataDirectory}/cols.npy', np.frombuffer(cols, dtype=np.int32))
+    np.save(f'{dataDirectory}/{name}_cols.npy', np.frombuffer(cols, dtype=np.int32))
     logger.info('Process documents - END')
 
 def create_embedding_model(sourceDataDirectory, dataDirectory, threads=1, force=False): 
@@ -82,7 +82,12 @@ def create_embedding_model(sourceDataDirectory, dataDirectory, threads=1, force=
         chunkCount=256
     )
 
-    create_vocabulary(documentsDataset=documentsDataset, logger=logger, dataDirectory=dataDirectory)
+    create_vocabulary(
+        documentsDataset=documentsDataset, 
+        logger=logger, 
+        dataDirectory=dataDirectory,
+        name=f'test_{date.today().strftime("%Y%m%d")}_{project.repoManager.commitHash}'
+    )
 
 
     
