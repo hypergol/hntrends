@@ -63,12 +63,8 @@ def create_embedding_model(sourceDataDirectory, modelDirectory, loadModelFile=No
         ]
         logger.info('Model loading - END')
 
-    print('-------')
-    print(model.callbacks[0].__dict__)
-    print('-------')
-
     logger.info('Model training - START')
-    # model.train(documents=taggedData, total_examples=model.corpus_count, epochs=model.epochs)
+    model.train(documents=taggedData, total_examples=model.corpus_count, epochs=model.epochs)
     logger.info('Model training - END')
 
 if __name__ == '__main__':
