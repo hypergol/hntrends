@@ -43,6 +43,7 @@ def create_vocabulary(documentsDataset, logger, dataDirectory):
         # for document in tqdm(dsr, total=21_000_000):
         for document in tqdm(islice(dsr, 1_000_000), total=1_000_000):
             hid = f'hn{document.hid}'
+            vocabulary[hid] = len(vocabulary)
             for label in document.labels:
                 if label not in vocabulary:
                     vocabulary[label] = len(vocabulary)
