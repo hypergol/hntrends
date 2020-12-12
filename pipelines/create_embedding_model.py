@@ -51,7 +51,7 @@ def create_vocabulary(documentsDataset, logger, dataDirectory):
                     rows.append(vocabulary[hid])
                     cols.append(vocabulary[label])
             lastMentionId = None
-            for token in tokens:
+            for token in document.tokens:
                 if token not in vocabulary:
                     vocabulary[token] = len(vocabulary)
                 if lastMentionId is not None:
