@@ -35,8 +35,8 @@ def create_embedding_model(sourceDataDirectory, modelDirectory, loadModelFile=No
     logger.info('Loading dataset - START')
     taggedData = []
     with documents.open('r') as dsr:
-        # for document in tqdm(dsr, total=21_000_000):
-        for document in tqdm(islice(dsr, 100_000), total=100_000):
+        for document in tqdm(dsr, total=21_000_000):
+        # for document in tqdm(islice(dsr, 100_000), total=100_000):
             taggedData.append(TaggedDocument(words=document.tokens, tags=document.labels))
     logger.info('Loading dataset - END')
 
@@ -47,7 +47,12 @@ def create_embedding_model(sourceDataDirectory, modelDirectory, loadModelFile=No
             dm=0, dbow_words=1, dm_concat=0, vector_size=VECTOR_SIZE, window=5, 
             negative=20, hs=0, min_count=3, workers=31, 
             epochs=50, alpha=0.025, min_alpha=0.001, 
-            callbacks=[EpochSaver(modelDirectory=modelDirectory, modelName=modelName)]
+            callbacks=[
+                EpochSaver(
+                    modelDirectory=modelDirectory, 
+                    modelName=modelName
+                )
+            ]
         )
         model.build_vocab(taggedData)
         logger.info('Model construction - END')
