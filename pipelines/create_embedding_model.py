@@ -1,10 +1,10 @@
 import os
-import date
 import fire
 import logging
 import array
 import numpy as np
 import scipy.sparse as sps
+from datetime import date
 from itertools import islice
 from tqdm import tqdm
 from hypergol import HypergolProject
@@ -44,7 +44,7 @@ def create_vocabulary(documentsDataset, logger):
             for label in document.labels:
                 if label not in vocabulary:
                     vocabulary[label] = len(vocabulary)
-                if label != hid
+                if label != hid:
                     rows.append(vocabulary[hid])
                     cols.append(vocabulary[label])
             lastMentionId = None
