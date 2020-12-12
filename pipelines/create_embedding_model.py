@@ -33,7 +33,7 @@ class EpochSaver(CallbackAny2Vec):
         model.save(fileName)
         self.epoch += 1
 
-def create_vocabulary(documentsDataset, logger):
+def create_vocabulary(documentsDataset, logger, dataDirectory):
     logger.info('Process documents - START')
     vocabulary = {}
     rows=array.array('I')
@@ -70,9 +70,9 @@ def create_vocabulary(documentsDataset, logger):
     np.save(f'{dataDirectory}/cols.npy', np.frombuffer(cols, dtype=np.int32))
     logger.info('Process documents - END')
 
-def create_embedding_model(dataDirectory, threads=1, force=False): 
+def create_embedding_model(sourceDataDirectory, dataDirectory, threads=1, force=False): 
     logger = Logger()
-    project = HypergolProject(dataDirectory=dataDirectory, force=force)
+    project = HypergolProject(dataDirectory=sourceDataDirectory, force=force)
     documentsDataset = project.datasetFactory.get(
         dataType=Document, 
         branch='document_creation', 
@@ -80,7 +80,7 @@ def create_embedding_model(dataDirectory, threads=1, force=False):
         chunkCount=256
     )
 
-    create_vocabulary(documentsDataset=documentsDataset, logger=logger)
+    create_vocabulary(documentsDataset=documentsDataset, logger=logger, dataDirectory=dataDirectory)
 
 
     
