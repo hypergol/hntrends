@@ -19,7 +19,7 @@ class EpochSaver(CallbackAny2Vec):
         self.epoch = epoch
 
     def on_epoch_end(self, model):
-        model.save(f'{self.modelDirectory}/{modelName}_{self.epoch:03}.model')
+        model.save(f'{self.modelDirectory}/{self.modelName}_{self.epoch:03}.model')
         self.epoch += 1
 
 def create_embedding_model(sourceDataDirectory, modelDirectory, loadModelFile=None, threads=1, force=False): 
