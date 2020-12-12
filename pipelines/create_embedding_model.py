@@ -68,7 +68,7 @@ def create_vocabulary(documentsDataset, logger):
     np.save(f'{dataDirectory}/cols.npy', np.frombuffer(cols, dtype=np.int32))
     logger.info('Process documents - END')
 
-def train_embedding_model(dataDirectory, threads=1, force=False): 
+def create_embedding_model(dataDirectory, threads=1, force=False): 
     logger = Logger()
     project = HypergolProject(dataDirectory=dataDirectory, force=force)
     documentsDataset = project.datasetFactory.get(
@@ -103,4 +103,4 @@ def train_embedding_model(dataDirectory, threads=1, force=False):
     # logger.info('Model training - END')
 
 if __name__ == '__main__':
-    fire.Fire(train_embedding_model)
+    fire.Fire(create_embedding_model)

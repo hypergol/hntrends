@@ -11,7 +11,7 @@ export NUMEXPR_NUM_THREADS=1
 DATA_DIRECTORY="/mnt/ds/temp"
 
 python3 \
-    ./pipelines/train_embedding_model.py \
+    ./pipelines/create_embedding_model.py \
     --dataDirectory=${DATA_DIRECTORY} \
     --threads=${THREADS} \
     $1
