@@ -36,8 +36,8 @@ class EpochSaver(CallbackAny2Vec):
 def create_vocabulary(documentsDataset, logger, dataDirectory):
     logger.info('Process documents - START')
     vocabulary = {}
-    rows=array.array('I')
-    cols=array.array('I')
+    rows=array.array('L')
+    cols=array.array('L')
     mentionId = 1_000_000_0000
     with documentsDataset.open('r') as dsr:
         # for document in tqdm(dsr, total=21_000_000):
