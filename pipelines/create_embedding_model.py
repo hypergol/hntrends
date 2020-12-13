@@ -1,4 +1,6 @@
+import os
 import fire
+import requests
 from itertools import islice
 from datetime import date
 from tqdm import tqdm
@@ -11,6 +13,13 @@ from gensim.models.callbacks import CallbackAny2Vec
 
 VECTOR_SIZE = 100
 
+def slack_message(message)
+    response = requests.post(
+        url=os.environ['LC_PERSONAL_SLACK'],
+        headers={'Content-type': 'application/json'},
+        data=f'{{"text":"{message}"}}'
+    )
+
 class EpochSaver(CallbackAny2Vec):
 
     def __init__(self, modelDirectory, modelName=None, epoch=0):
@@ -19,10 +28,12 @@ class EpochSaver(CallbackAny2Vec):
         self.epoch = epoch
 
     def on_epoch_end(self, model):
+        slack_message(message=f'Saving epoch:{self.epoch:03}')
         model.save(f'{self.modelDirectory}/{self.modelName}_{self.epoch:03}.model')
         self.epoch += 1
 
 def create_embedding_model(sourceDataDirectory, modelDirectory, loadModelFile=None, threads=1, force=False): 
+    slack_message(message='Processing start')
     logger = Logger()
     project = HypergolProject(dataDirectory=sourceDataDirectory, force=force)
     documents = project.datasetFactory.get(
