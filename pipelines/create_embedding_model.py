@@ -79,6 +79,7 @@ def create_embedding_model(sourceDataDirectory, modelDirectory, loadModelFile=No
         ]
         logger.info('Model loading - END')
 
+    slack_message(message='Training start')
     logger.info('Model training - START')
     model.train(documents=taggedData, total_examples=model.corpus_count, epochs=model.epochs)
     logger.info('Model training - END')
