@@ -13,7 +13,7 @@ from gensim.models.callbacks import CallbackAny2Vec
 
 VECTOR_SIZE = 100
 
-def slack_message(message)
+def slack_message(message):
     response = requests.post(
         url=os.environ['LC_PERSONAL_SLACK'],
         headers={'Content-type': 'application/json'},
