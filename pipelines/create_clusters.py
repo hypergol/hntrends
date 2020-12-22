@@ -8,6 +8,10 @@ from data_models.element import Element
 from data_models.cluster_model import ClusterModel
 
 
+class EpochSaver:
+    pass
+    
+
 def create_clusters(dataDirectory, threads=1, force=False):
     project = HypergolProject(dataDirectory=dataDirectory, force=force)
     documents = project.datasetFactory.get(
