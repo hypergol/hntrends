@@ -23,7 +23,7 @@ def create_clusters(dataDirectory, threads=1, force=False):
     elements = project.datasetFactory.get(
         dataType=Element, 
         name='elements', 
-        chunkCount=256
+        chunkCount=16
     )
     clusterModels = project.datasetFactory.get(
         dataType=ClusterModel,
@@ -35,7 +35,7 @@ def create_clusters(dataDirectory, threads=1, force=False):
         inputDatasets=[documents],
         outputDataset=elements,
         modelPath='/mnt/ds/doc2vec/doc2vec_20201213_c0c6fccadce4d1cad0eb3aa93bff9ac20fa81cda_015.model',
-        logAtEachN=1000,
+        logAtEachN=10_000,
         debug=True
     )
     createClusterModels = CreateClusterModels(
