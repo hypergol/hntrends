@@ -36,6 +36,7 @@ def create_clusters(threads=1, force=False):
     createClusterModels = CreateClusterModels(
         loadedInputDatasets=[elements],
         outputDataset=models,
+        logAtEachN=10,
         debug=True
     )
 

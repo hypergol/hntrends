@@ -10,7 +10,7 @@ class TestClusterModel(TestCase):
 
     def __init__(self, methodName):
         super(TestClusterModel, self).__init__(methodName=methodName)
-        self.clusterModel = ClusterModel(date='', model={"sample": "sample"})
+        self.clusterModel = ClusterModel(date='', model={"sample": "sample"}, hids=['', ''], labels=[0, 0])
 
     def setUp(self):
         super().setUp()

@@ -1,11 +1,15 @@
+from typing import List
+
 from hypergol import BaseData
 
 
 class ClusterModel(BaseData):
 
-    def __init__(self, date: str, model: object):
+    def __init__(self, date: str, model: object, hids: List[str], labels: List[int]):
         self.date = date
         self.model = model
+        self.hids = hids
+        self.labels = labels
 
     def get_id(self):
         return (self.date, )

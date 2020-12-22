@@ -1,33 +1,31 @@
+import hdbscan
 from hypergol import Job
 from hypergol import Task
-from data_models.element import Element
-
+from data_models.cluster_model import ClusterModel
 
 class CreateClusterModels(Task):
 
-    def __init__(self, exampleParameter, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(CreateClusterModels, self).__init__(*args, **kwargs)
-        # TODO: all member variables must be pickle-able, otherwise use the "Delayed" methodology
-        # TODO: (e.g. for a DB connection), see the documentation <add link here>
-        self.exampleParameter = exampleParameter
-
-    def init(self):
-        # TODO: initialise members that are NOT "Delayed" here (e.g. load spacy model)
-        pass
 
     def get_jobs(self):
-        raise NotImplementedError(f'{self.__class__.__name__} must implement get_jobs()')
-        # TODO: Return a list of Job classes here that will be passed on to the source_iterator
-        return [Job(id_=k, total= ..., parameters={...}) for k, ... in enumerate(...)]
+        nJobs = self.self.outputDataset.chunkCount
+        return [Job(id_=k, total=nJobs) for k, in range(nJobs)]
 
     def source_iterator(self, parameters):
-        raise NotImplementedError(f'{self.__class__.__name__} must implement source_iterator()')
-        # TODO: use the parameters (from Job) to open
-        # TODO: use yield in this function instead of return while you are consuming your source data
-        # TODO: return type must be list or tuple as the * operator will be used on it
-        yield (exampleData, )
+        yield (None, )
 
-    def run(self, exampleData):
-        raise NotImplementedError(f'{self.__class__.__name__} must implement run()')
-        # TODO: Use the exampleData from source_iterator to construct a domain object
-        self.output.append(exampleOutputObject)
+    def run(self, dummy, elements):
+        dates = {element.date for date in elements}
+        for k, date in enumerate(dates):
+            if k % self.logAtEachN == 0:
+                self.logger(f'models {k} / {len(dates)}')
+            vectors = np.array([element.vector for element in elements if element.date==date])
+            model = hdbscan.HDBSCAN()
+            labels = model.fit_predict(vectors)
+            self.output.append(ClusterModel(
+                date=date,
+                model=model,
+                hids=[element.hid for element in elements if element.date==date],
+                labels=labels
+            ))

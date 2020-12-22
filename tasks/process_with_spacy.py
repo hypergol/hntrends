@@ -38,15 +38,11 @@ class ProcessWithSpacy(Task):
     def __init__(self, spacyModelName, *args, **kwargs):
         super(ProcessWithSpacy, self).__init__(*args, **kwargs)
         self.spacyModelName = spacyModelName
-        # self.k=0
 
     def init(self):
         self.spacyModel = spacy.load(self.spacyModelName)
 
     def run(self, comment):
-        # self.k+=1
-        # if self.k % 1000 != 0:
-        #     return
         spacyDocument = self.spacyModel(comment.text)
         labels={f'hn{comment.hid}', f'@{comment.author}'}
         if comment.parent != -sys.maxsize:
