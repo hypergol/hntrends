@@ -43,7 +43,7 @@ def create_clusters(threads=1, force=False):
     pipeline = Pipeline(
         tasks=[
             createElements,
-            createClusterModels,
+            # createClusterModels,
         ]
     )
     pipeline.run(threads=threads)
