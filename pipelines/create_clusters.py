@@ -30,7 +30,7 @@ def create_clusters(threads=1, force=False):
     createElements = CreateElements(
         inputDatasets=[documents],
         outputDataset=elements,
-        modelPath='/mnt/ds/doc2vec/doc2vec_20201213_c0c6fccadce4d1cad0eb3aa93bff9ac20fa81cda_015.model'
+        modelPath='/mnt/ds/doc2vec/doc2vec_20201213_c0c6fccadce4d1cad0eb3aa93bff9ac20fa81cda_015.model',
         debug=True
     )
     createClusterModels = CreateClusterModels(
