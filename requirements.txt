@@ -10,3 +10,4 @@ pandas==1.1.4
 beautifulsoup4==4.9.3
 spacy==2.3.4
 gensim==3.8.3
+hdbscan==0.8.26
