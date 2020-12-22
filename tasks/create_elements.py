@@ -31,6 +31,6 @@ class CreateElements(Task):
             hid=hid,
             parent=parent,
             author=author,
-            entities=[l for l in document.labels if l not in nonEntities]
+            entities=[l for l in document.labels if l not in nonEntities],
             vector=vector / np.sqrt(np.sum(np.power(vector, 2)))
         )
