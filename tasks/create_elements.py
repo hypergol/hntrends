@@ -27,7 +27,7 @@ class CreateElements(Task):
         vector = model.docvecs.vectors_docs[offset, :]
         self.output.append(Element(
             date=str(document.timestamp)[:10],
-            timestamp=document.timestamp
+            timestamp=document.timestamp,
             hid=hid,
             parent=parent,
             author=author,
