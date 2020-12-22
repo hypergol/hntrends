@@ -20,6 +20,11 @@ python3 -m hypergol.cli.create_task SelectComments RawData Comment
 
 python3 -m hypergol.cli.create_pipeline ProcessHackerNews LoadData SelectStories SelectComments RawData Comment Story
 
+python -m hypergol.cli.create_data_model Element date:str:id timestamp:datetime hid:str parent:str author:str "entities:List[str]"
+python -m hypergol.cli.create_data_model ClusterModel date:str:id model:object
+python3 -m hypergol.cli.create_task CreateElements Document Element
+python3 -m hypergol.cli.create_task CreateClusterModels Element
+python3 -m hypergol.cli.create_pipeline CreateClusters CreateElements CreateClusterModels Document Element
 
 ```
 
