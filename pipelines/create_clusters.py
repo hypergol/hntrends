@@ -8,8 +8,8 @@ from data_models.element import Element
 from data_models.cluster_model import ClusterModel
 
 
-def create_clusters(threads=1, force=False):
-    project = HypergolProject(dataDirectory='.', force=force)
+def create_clusters(dataDirectory, threads=1, force=False):
+    project = HypergolProject(dataDirectory=dataDirectory, force=force)
     documents = project.datasetFactory.get(
         dataType=Document, 
         branch='document_creation', 
