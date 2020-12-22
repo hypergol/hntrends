@@ -23,8 +23,8 @@ class CreateElements(Task):
         parent = next((l for l in document.labels if l!=hid and l.startswith('hn')), '')
         author = next((l for l in document.labels if l.startswith('@')), '')
         nonEntities = {hid, parent, author}
-        offset = model.docvecs.doctags[hid].offset
-        vector = model.docvecs.vectors_docs[offset, :]
+        offset = self.model.docvecs.doctags[hid].offset
+        vector = self.model.docvecs.vectors_docs[offset, :]
         self.output.append(Element(
             date=str(document.timestamp)[:10],
             timestamp=document.timestamp,
