@@ -15,9 +15,9 @@ class CreateElements(Task):
 
     def init(self):
         self.log('Model Load - START')
-        self.logger._logger.disabled = True
+        # self.logger._logger.disabled = True
         self.model = Doc2Vec.load(self.modelPath, mmap='r')
-        self.logger._logger.disabled = False
+        # self.logger._logger.disabled = False
         self.log('Model Load - END')
 
     def run(self, document):
