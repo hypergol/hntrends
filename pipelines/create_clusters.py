@@ -5,7 +5,7 @@ from tasks.create_elements import CreateElements
 from tasks.create_cluster_models import CreateClusterModels
 from data_models.document import Document
 from data_models.element import Element
-from data_models.model import Model
+from data_models.cluster_model import ClusterModel
 
 
 def create_clusters(threads=1, force=False):
@@ -21,9 +21,9 @@ def create_clusters(threads=1, force=False):
         name='elements', 
         chunkCount=256
     )
-    models = project.datasetFactory.get(
-        dataType=Model,
-        name='models',
+    clusterModels = project.datasetFactory.get(
+        dataType=ClusterModel,
+        name='cluster_models',
         chunkCount=256
     )
 
@@ -35,7 +35,7 @@ def create_clusters(threads=1, force=False):
     )
     createClusterModels = CreateClusterModels(
         loadedInputDatasets=[elements],
-        outputDataset=models,
+        outputDataset=clusterModels,
         logAtEachN=10,
         debug=True
     )
