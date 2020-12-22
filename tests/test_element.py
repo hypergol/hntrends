@@ -10,7 +10,7 @@ class TestElement(TestCase):
 
     def __init__(self, methodName):
         super(TestElement, self).__init__(methodName=methodName)
-        self.element = Element(date='', timestamp=datetime.now(), hid='', parent='', author='', entities=['', ''])
+        self.element = Element(date='', timestamp=datetime.now(), hid='', parent='', author='', entities=['', ''], vector={"sample": "sample"})
 
     def setUp(self):
         super().setUp()
